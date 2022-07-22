@@ -30,7 +30,7 @@ $icon_data_uri = 'dashicons-products' ;
 $page_title = 'Hello World';
 $menu_title = 'Perzi Admin';
 $icon_data_uri;
-$position   = '20';
+$position   = '5';
 $capability = 'manage_options';
 $menu_slug  = 'newPage';
 $function   = 'test_page';
@@ -45,8 +45,30 @@ add_menu_page(
     $position
 );
 
-}
+add_submenu_page(
+    'newPage',
+    'Contact Page',
+    'Contact Us',
+    $capability,
+    'sub-page',
+    'contact_page'
 
+  
+
+);
+add_submenu_page(
+    'newPage',
+    'Manage Posts',
+    'Manage Posts',
+    $capability,
+    'custom-post-type',
+    'create_custom_post_type'
+
+  
+
+);
+
+}
 function test_page()
 {
 ?>
@@ -91,7 +113,56 @@ function test_page()
 
 
 }
+function contact_page(){
+  ?>
+    <div class="simple-contact-form" style=" background-color: white; display: inline-block; border-radius: 10px; margin: 30px 10px 15% 25%; align-self: middle; text-align: center;color: grey; width: 420px; height: 300px; box-shadow: 10px 3px 10px solid grey;" #ccc id="simple_contact_form__form" >
+    <div class='header-container' style=" background-color:yellow;  border-radius: 5px; padding: 2px; ">
+      <h1>Contact Us</h1>
+      <p>We would love to hear from you!</p>
+      
+      
+    </div>
+   <hr>
+    <form id="simple-contact-form__form ">
+    
+    <div class="form-group mb-3">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <br/>
+      <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" style="width: 80%;">
+      
+    </div>
 
+    <div class="form-group mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <br/>
+      <input type="text-area" class="form-control" id="InputPassword1" style="width: 80%; ">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-success btn-block w-100">Submit</button>
+  </form>
+
+  </div>
+  <?php
+}
+function create_custom_post_type()
+{
+      $args = array(
+          'public' => true,
+          'has_archive' => true,
+          'supports' => array('title'),
+          'exclude_from_search' => true,
+          'publicly_queryable' => false,
+          'capability'=> 'manage_options',
+          'labels' => array(
+              'name' => 'Contact Form',
+              'singular_name' => 'Contact Form Entry',
+          ),
+
+          'menu_icon' => 'dashicons-media-text',
+
+      );
+      register_post_type('simple_contact_form', $args);
+}
 class SimpleContactForm{
   public function __construct()
   {

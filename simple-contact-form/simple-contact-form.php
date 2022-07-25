@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Perzi
- * Description:       Uses REST API to extend functionality of perzi platform onto Wordpress.
+ * Description:       Adding functionality of perzi platform onto Wordpress.
  * Version:           1.0.0
  * Author:            Chibogu Chisom
  * Text Domain:       simple-contact-form
@@ -115,7 +115,7 @@ function test_page()
 }
 function contact_page(){
   ?>
-    <div class="simple-contact-form" style=" background-color: white; display: inline-block; border-radius: 10px; margin: 30px 10px 15% 25%; align-self: middle; text-align: center;color: grey; width: 420px; height: 300px; box-shadow: 10px 3px 10px solid grey;" #ccc id="simple_contact_form__form" >
+    <div class="simple-contact-form" style=" background-color: white; display: inline-block; border-radius: 10px; margin: 30px 10px 15% 25%; align-self: middle; text-align: center;color: grey; width: 420px; height: 350px; box-shadow: 10px 3px 10px solid grey;" #ccc id="simple_contact_form__form" >
     <div class='header-container' style=" background-color:yellow;  border-radius: 5px; padding: 2px; ">
       <h1>Contact Us</h1>
       <p>We would love to hear from you!</p>
@@ -133,9 +133,9 @@ function contact_page(){
     </div>
 
     <div class="form-group mb-3">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <label for="exampleInputPassword1" class="form-label">Message</label>
       <br/>
-      <input type="text-area" class="form-control" id="InputPassword1" style="width: 80%; ">
+      <textarea type="text-area" class="form-control" rows='5' columns="10" id="InputPassword1" style="width: 80%; "></textarea>
     </div>
     <br>
     <button type="submit" class="btn btn-success btn-block w-100">Submit</button>
@@ -166,7 +166,7 @@ function create_custom_post_type()
 class SimpleContactForm{
   public function __construct()
   {
-    add_action( 'init', array($this, 'create_posttype' ));
+    
 
     add_action('init', array($this, 'create_custom_post_type'));
       /*
@@ -176,12 +176,13 @@ class SimpleContactForm{
     add_shortcode('contact-form', array($this, 'load_shortcode'));
 
     add_action('wp_footer', array($this, 'load_scripts'));
-
+    /*
     add_action('rest_api_init', array($this, 'register_rest_api'));
-
+*/
    
 
     
+    //add_action('rest_api_init', array($this, 'register_rest_api'));
   }
   public function create_custom_post_type()
   {
@@ -193,8 +194,8 @@ class SimpleContactForm{
             'publicly_queryable' => false,
             'capability'=> 'manage_options',
             'labels' => array(
-                'name' => 'Contact Form',
-                'singular_name' => 'Contact Form Entry',
+                'name' => 'Migrate',
+                'singular_name' => 'Migrate Entry',
             ),
 
             'menu_icon' => 'dashicons-media-text',
@@ -202,23 +203,7 @@ class SimpleContactForm{
         );
         register_post_type('simple_contact_form', $args);
   }
-  public function create_posttype() {
- 
-    register_post_type( 'Products',
-    // CPT Options
-        array(
-            'labels' => array(
-                'name' => __( 'Products' ),
-                'singular_name' => __( 'Product' )
-            ),
-            'public' => true,
-            'has_archive' => true,
-            'rewrite' => array('slug' => 'Products'),
-            'show_in_rest' => true,
- 
-        )
-    );
-}
+
   
   public function load_assets(){
     /*
@@ -300,10 +285,10 @@ class SimpleContactForm{
    {
     register_rest_route('simple-contact-form/v1', 'send-email', array(
       'methods' => 'POST',
-      'callback' => array($this, 'handle_contac_form')
+      'callback' => array($this, 'handle_contact_form')
     ));
    }
-   public function handle_contac_form($request)
+   public function handle_contact_form($request)
    {
     $email = $request->get_param('email');
     $message = $request->get_param('message');
